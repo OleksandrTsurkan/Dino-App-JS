@@ -1,3 +1,4 @@
+import { setupCactus, updateCactus } from "./cactus";
 import { setupDino, undateDino } from "./dino";
 import { setupGround, updateGround } from "./ground";
 
@@ -29,6 +30,7 @@ function update(time) {
 
   updateGround(delta, speedScale);
   undateDino(delta, speedScale);
+  updateCactus(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
 
@@ -52,6 +54,7 @@ function handleStart() {
   score = 0;
   setupGround();
   setupDino();
+  setupCactus();
   startScreenElem.classList.add("hide");
   window.requestAnimationFrame(update);
 }
