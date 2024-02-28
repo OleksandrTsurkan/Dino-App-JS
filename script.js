@@ -1,5 +1,5 @@
-import { setupCactus, updateCactus } from "./cactus";
-import { setupDino, undateDino } from "./dino";
+import { getCactusRects, setupCactus, updateCactus } from "./cactus";
+import { getDinoRect, setDinoLose, setupDino, undateDino } from "./dino";
 import { setupGround, updateGround } from "./ground";
 
 const WORLD_WIDTH = 100;
@@ -33,11 +33,25 @@ function update(time) {
   updateCactus(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
+  if (checkLose()) return handleLose();
 
   lastTime = time;
   window.requestAnimationFrame(update);
 }
-window.requestAnimationFrame(update);
+
+function checkLose() {
+  const dinoRect = getDinoRect();
+  return getCactusRects().some((rect) => isCollision(rect, dinoRect));
+}
+
+function isCollision(rect1, rect2) {
+  return (
+    rect1.left < rect2.right &&
+    rect1.top < rect2.bottom &&
+    rect1.right > rect2.left &&
+    rect1.bottom > rect2.top
+  );
+}
 
 function updateSpeedScale(delta) {
   speedScale += delta * SPEED_SCALE_INCREASE;
@@ -57,6 +71,14 @@ function handleStart() {
   setupCactus();
   startScreenElem.classList.add("hide");
   window.requestAnimationFrame(update);
+}
+
+function handleLose() {
+  setDinoLose();
+  setTimeout(() => {
+    document.addEventListener("keydown", handleStart, { once: true });
+    startScreenElem.classList.remove("hide");
+  }, 100);
 }
 
 function setPixelToWorldScale() {
