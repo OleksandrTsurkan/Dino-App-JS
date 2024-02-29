@@ -3,7 +3,7 @@ export function getCustomProperty(elem, prop) {
 }
 
 export function setCustomProperty(elem, prop, value) {
-  elem.stele.setProperty(prop, value);
+  elem.style.setProperty(prop, value);
 }
 
 export function incrementCustomProperty(elem, prop, inc) {

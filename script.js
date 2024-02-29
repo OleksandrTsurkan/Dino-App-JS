@@ -1,6 +1,6 @@
-import { getCactusRects, setupCactus, updateCactus } from "./cactus";
-import { getDinoRect, setDinoLose, setupDino, undateDino } from "./dino";
-import { setupGround, updateGround } from "./ground";
+import { updateGround, setupGround } from "./ground.js";
+import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js";
+import { updateCactus, setupCactus, getCactusRects } from "./cactus.js";
 
 const WORLD_WIDTH = 100;
 const WORLD_HEIGHT = 30;
@@ -14,22 +14,19 @@ setPixelToWorldScale();
 window.addEventListener("resize", setPixelToWorldScale);
 document.addEventListener("keydown", handleStart, { once: true });
 
-setupGround();
-
 let lastTime;
 let speedScale;
 let score;
 function update(time) {
   if (lastTime == null) {
     lastTime = time;
-
     window.requestAnimationFrame(update);
     return;
   }
   const delta = time - lastTime;
 
   updateGround(delta, speedScale);
-  undateDino(delta, speedScale);
+  updateDino(delta, speedScale);
   updateCactus(delta, speedScale);
   updateSpeedScale(delta);
   updateScore(delta);
@@ -83,11 +80,12 @@ function handleLose() {
 
 function setPixelToWorldScale() {
   let worldToPixelScale;
-  if (window.innerWidth / window.innerHeight < WORLD_HEIGHT) {
-    worldToPixelScale = window.innerWidth / WORLD_HEIGHT;
+  if (window.innerWidth / window.innerHeight < WORLD_WIDTH / WORLD_HEIGHT) {
+    worldToPixelScale = window.innerWidth / WORLD_WIDTH;
   } else {
     worldToPixelScale = window.innerHeight / WORLD_HEIGHT;
   }
-  worldElem.computedStyleMap.width = `${WORLD_WIDTH * worldToPixelScale}px`;
-  worldElem.computedStyleMap.height = `${WORLD_HEIGHT * worldToPixelScale}px`;
+
+  worldElem.style.width = `${WORLD_WIDTH * worldToPixelScale}px`;
+  worldElem.style.height = `${WORLD_HEIGHT * worldToPixelScale}px`;
 }
