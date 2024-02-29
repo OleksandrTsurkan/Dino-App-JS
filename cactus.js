@@ -1,10 +1,10 @@
 import {
-  getCustomProperty,
-  incrementCustomProperty,
   setCustomProperty,
-} from "./updateCustomProperty";
+  incrementCustomProperty,
+  getCustomProperty,
+} from "./updateCustomProperty.js";
 
-const SPPED = 0.05;
+const SPEED = 0.05;
 const CACTUS_INTERVAL_MIN = 500;
 const CACTUS_INTERVAL_MAX = 2000;
 const worldElem = document.querySelector("[data-world]");
@@ -24,6 +24,7 @@ export function updateCactus(delta, speedScale) {
       cactus.remove();
     }
   });
+
   if (nextCactusTime <= 0) {
     createCactus();
     nextCactusTime =
@@ -40,9 +41,9 @@ export function getCactusRects() {
 }
 
 function createCactus() {
-  const cactus = document.createElement("div");
+  const cactus = document.createElement("img");
   cactus.dataset.cactus = true;
-  cactus.src = "img/cactus.png";
+  cactus.src = "imgs/cactus.png";
   cactus.classList.add("cactus");
   setCustomProperty(cactus, "--left", 100);
   worldElem.append(cactus);
